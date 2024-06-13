@@ -29,8 +29,15 @@ jobs:
     - name: install
       run: npm install
     - name: start-test-app
-      run: npm start
+      run: npm start &
+      env:
+        CI: true
+    - name: Wait for the app to start
+      run: sleep 10
     - name: test
       run: npm test
+    - name: Stop the app
+      run: |
+        kill $(jobs -p)
     - run: npm ci
     - run: npm run build --if-present
